@@ -8,15 +8,53 @@ screen = pygame.display.set_mode((400, 400))
 
 rect(screen, (28,170,214), (0, 0, 400,200))
 rect(screen, (0, 128,0), (0,200, 400,200))
-rect(screen, (160, 82,45), (50,170, 100,80))
-rect(screen, (0,0,0), (50,170, 100,80),2)
-rect(screen, (37,178,170), (100, 210, 50,50))
-polygon(screen, (255, 0, 0), [(50,170), (100,110),
-                               (150,170)])
-polygon(screen, (0, 0, 0), [(50,170), (100,110),
-                               (150,170)],2)
-circle(screen, (0, 255, 0), (200, 175), 50)
-circle(screen, (255, 255, 255), (200, 175), 50, 5)
+# rect(screen, (160, 82,45), (50,170, 100,80))
+# rect(screen, (0,0,0), (50,170, 100,80),2)
+# rect(screen, (37,178,170), (125, 210, 50,50))
+# polygon(screen, (255, 0, 0), [(50,170), (100,110),
+#                                (150,170)])
+# polygon(screen, (0, 0, 0), [(50,170), (100,110),
+#                                (150,170)],2)
+circle(screen, (255, 255, 0), (60, 60), 50)
+
+
+def draw_house(surface,x,y,w,h):
+    draw_body(surface,x, y+h//6, w, 2*h//3)
+    draw_roof(surface,x, y-h//3, w, h//3)
+    draw_window(surface,x,y,w//3,h//6)
+    circle(screen, (255, 255, 255), (200, 175), 50, 5)
+def draw_body(surface,x,y,w,h):
+    rect( surface, (160, 82,45), (x-w//2,y-h//2,w,h))
+    rect( surface, (0,0,0), (x-w//2,y-h//2,w,h), 2)
+   
+def draw_roof(surface,x,y,w,h):
+    polygon(surface,(255, 0, 0), [(x-w//2,y+h//2), (x,y-h//2),(x+w//2,y+h//2)])
+    polygon(surface, (0,0,0), [(x-w//2,y+h//2), (x,y-h//2),(x+w//2,y+h//2)],2)
+
+def draw_window(surface,x,y,w,h):
+    rect(surface, (37,178,170), (x-w//2,y-h//2,w,h))
+    
+draw_house(screen, 10,300, 10,20)
+draw_house(screen, 30,290, 20,40)
+draw_house(screen, 70,270, 40,80)
+draw_house(screen, 150,230, 80,160)
+draw_house(screen, 300,150, 160,320)
+
+    
+pygame.display.update()
+clock = pygame.time.Clock()
+finished = False
+
+while not finished:
+    clock.tick(FPS)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            finished = True
+
+pygame.quit()
+
+    
+    
 
 pygame.display.update()
 clock = pygame.time.Clock()
@@ -29,3 +67,4 @@ while not finished:
             finished = True
 
 pygame.quit()
+
