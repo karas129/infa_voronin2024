@@ -1,0 +1,88 @@
+import pygame
+from pygame.draw import *
+from random import randint
+pygame.init()
+
+FPS = 30
+screen = pygame.display.set_mode((1200, 900))
+GAME_FONT = pygame.font.SysFont('Arial',50)
+
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+YELLOW = (255, 255, 0)
+GREEN = (0, 255, 0)
+MAGENTA = (255, 0, 255)
+CYAN = (0, 255, 255)
+BLACK = (0, 0, 0)
+COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
+
+
+
+def new_ball():
+    x = randint(100,700)
+    y = randint(100,500)
+    r = randint(30,50)
+    color = COLORS[randint(0, 5)]
+    return x, y, r, color
+
+def draw_ball(ball):
+    x, y, r, color = ball
+    circle(screen, color, (x, y), r)
+
+   
+def new_triangle():
+    a = randint(100,700)
+    b = randint(100,500)
+    c = randint(30,50)
+    color = COLORS[randint(0, 5)]
+    return a,b,c,color
+
+def draw_triangle(triangle):
+   a,b,c,color = triangle
+   polygon(screen, color,[a,b,c])
+    
+
+# def click(event):
+#     print(x, y, r)
+
+score = 0
+balls = [new_ball(), new_ball(), new_triangle()]
+
+def isballclicked(pos, ball):
+    x, y, r, color = ball
+    distance = ((pos[0] - x)**2 + (pos[1] - y)**2)**0.5
+    return distance <= r
+
+pygame.display.update()
+clock = pygame.time.Clock()
+finished = False
+countime = 0
+score = 0
+
+while not finished:
+    clock.tick(FPS)
+    countime += 1
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            finished = True
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos() 
+            for ball in balls:
+                if isballclicked(event.pos, ball):
+                    print("OK")
+                    balls = [new_ball(), new_ball(),new_triangle()]
+                    countime = 0
+                    score+=50
+   
+    if countime == 30:
+        balls = [new_ball(), new_ball(), new_triangle()]
+        countime = 0
+        
+    screen.fill(BLACK)
+
+    for ball in balls:
+        draw_ball(ball)
+    
+    IMG = GAME_FONT.render(f'Очки: {score}', True, "white")
+    screen.blit(IMG, (1200 - IMG.get_size()[0], 0))
+    pygame.display.update()
